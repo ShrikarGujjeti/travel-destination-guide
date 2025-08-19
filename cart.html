@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart - FirstFlight Travels</title>
+<link rel="stylesheet" href="./css/style.css">
+<link href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+<script src="cart.js"></script>
+</head>
+<body>
+
+<!-- Home link (top-left) -->
+<!-- removed the top-left absolute Home button to keep layout as before -->
+
+<!-- Banner / Header -->
+<section class="cart-banner">
+    <div class="content">
+        <h1>Your Cart</h1>
+        <a href="index.html" class="button">Continue Shopping</a>
+    </div>
+</section>
+
+<!-- Cart Section -->
+<section class="cart-container">
+    <h2>Your Selected Packages</h2>
+    <ul id="cart-items" class="cart-list"></ul>
+    <h2 id="total">Total: ₹0</h2>
+    <button id="checkout-btn" class="button checkout-btn">Checkout</button>
+</section>
+
+<!-- Footer -->
+<section class="footer">
+    <div class="foot">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./register.html">Register</a></li>
+                    <li><a href="./about.html">About Us</a></li>
+                    <li><a href="./contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footlinks">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="https://www.facebook.com/share/16kkL7CYGV/" target="_blank"><i class='bx bxl-facebook'></i></a>
+                    <a href="https://www.instagram.com/aryyaaa.15?igsh=cWFpZXF0MXBwMzN3&utm_source=ig_contact_invite" target="_blank"><i class='bx bxl-instagram' ></i></a>
+                    <a href="https://x.com/abhishek01_2005?t=7NIY2iwIRhC_0p4MXpwWog&s=09" target="_blank"><i class='bx bxl-twitter' ></i></a>
+                    <a href="https://www.linkedin.com/in/mohdrahil101" target="_blank"><i class='bx bxl-linkedin' ></i></a>
+                    <a href="https://youtube.com/@abhishekpandey-cd4ms?si=uehYnICV6sdY-SEn" target="_blank"><i class='bx bxl-youtube' ></i></a>
+                    <a href="https://github.com/AryaSingh15" target="_blank"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="end">
+        <p>Copyright © 2025 AA Travels All Rights Reserved.<br>Website developed by: Abhishek and Arya</p>
+    </div>
+</section>
+
+<!-- Razorpay Checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const checkoutBtn = document.getElementById("checkout-btn");
+    if (!checkoutBtn || typeof window.cart === 'undefined') return;
+
+    checkoutBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const totalAmount = (Array.isArray(cart) ? cart.reduce((sum, item) => sum + (Number(item.price) || 0), 0) : 0) * 100; // paise
+
+        if (totalAmount <= 0) {
+            alert("Cart is empty!");
+            return;
+        }
+
+        var options = {
+            "key": "rzp_test_R7I5Fy8cCZvcBC", // test key id provided
+            "amount": totalAmount,
+            "currency": "INR",
+            "name": "FirstFlight Travels",
+            "description": "Travel Package Payment",
+            "handler": function (response) {
+                alert("Payment Successful! ID: " + response.razorpay_payment_id);
+                localStorage.removeItem("cart");
+                if (typeof displayCart === 'function') displayCart();
+                if (typeof updateCartCount === 'function') updateCartCount();
+                window.location.href = "success.html";
+            },
+            "theme": { "color": "#fc0050" }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    });
+});
+</script>
+
+</body>
+</html>

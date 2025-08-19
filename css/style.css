@@ -1,7 +1,7 @@
 *{
     padding:0;
     margin:0;
-    box-sizing:border;
+    box-sizing: border-box;
     font-family:'Poppins',sans-serif;
     text-decoration: none;
     list-style: none;
@@ -44,7 +44,7 @@ nav{
     width: 100%;
     position: fixed;
     background-color: rgb(21, 74, 74);
-    box-shadow: 5px 5px 30px rgba(0, 0, 0, 15%);
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.15);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -598,7 +598,7 @@ nav ul li a{
     display: inline-block;
     background-color: #fc0050;
     font-size: 27px;
-    font-weight: 600px;
+    font-weight: 600;
     border: 2px solid transparent;
     border-radius: 40px;
     width: 220px;
@@ -666,7 +666,7 @@ nav ul li a{
     display: inline-block;
     background-color: #fc0050;
     font-size: 27px;
-    font-weight: 600px;
+    font-weight: 600;
     border: 2px solid transparent;
     border-radius: 60px;
     width: 220px;
@@ -725,3 +725,221 @@ nav ul li a{
     font-size: 20px;
     color: rgb(197, 167, 44);
 }
+
+.location button {
+    background-color: #fc0050;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.location button:hover {
+    background-color: transparent;
+    border: 2px solid #fc0050;
+    transform: scale(1.05);
+}
+
+/* Cart Section Styling */
+.cart-section {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-family: 'Poppins', sans-serif;
+}
+
+.cart-section h2 {
+    text-align: center;
+    font-family: 'Paytone One', sans-serif;
+    color: #fc0050;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f7f7;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    background: #ffe5eb;
+}
+
+.cart-item span {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.delete-btn {
+    background: #fc0050;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #e60044;
+}
+
+#total {
+    text-align: right;
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+#checkout-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #fc0050;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#checkout-btn:hover {
+    background: #e60044;
+}
+
+/* Cart Page Banner/Header */
+.cart-banner {
+    width: 100%;
+    height: 35vh;
+    background: linear-gradient(rgba(252,0,80,0.7),rgba(21,74,74,0.7)), url('../images/cart-banner.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+.cart-banner .content {
+    text-align: center;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+    background: transparent; /* ensure no extra dark background */
+}
+.cart-banner::before,
+.cart-banner::after {
+    /* hide any pseudo-element overlay that might block clicks */
+    display: none !important;
+    pointer-events: none !important;
+}
+
+/* Cart Container */
+.cart-container {
+    max-width: 600px;
+    margin: 0 auto 60px auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(21,74,74,0.12);
+    padding: 40px 30px 30px 30px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    z-index: 1000;
+}
+
+.cart-container h2 {
+    text-align: center;
+    color: #fc0050;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    font-family: 'Paytone One', sans-serif;
+    letter-spacing: 1px;
+}
+
+.cart-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+}
+
+.cart-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f7f7;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(252,0,80,0.04);
+    position: relative;
+    z-index: 1001;
+}
+
+.cart-list li:last-child {
+    margin-bottom: 0;
+}
+
+#total {
+    text-align: right;
+    font-size: 1.3rem;
+    color: #222;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    background: #fc0050;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    padding: 15px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.checkout-btn:hover {
+    background: #d90045;
+}
+
+/* Responsive Design */
+@media (max-width: 700px) {
+    .cart-container {
+        padding: 20px 8px 20px 8px;
+    }
+    .cart-banner h1 {
+        font-size: 2rem;
+    }
+}
+
+
