@@ -187,17 +187,33 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // convert inline addToCart buttons -> professional add-to-cart (price fixed ₹10,000)
+    const locationPrices = {
+        Kashmir: 9999,
+        Istanbul: 39999,
+        Paris: 59999,
+        Bali: 29999,
+        Dubai: 44999,
+        Geneva: 49999,
+        'Port Blair': 24999,
+        Rome: 54999
+    };
+
     document.querySelectorAll('.location-detail').forEach(function (container) {
         const oldBtn = container.querySelector('button[onclick*="addToCart("]');
         if (!oldBtn) return;
 
-        // extract name from onclick or fallback to id
         const onclick = oldBtn.getAttribute('onclick') || '';
         const m = onclick.match(/addToCart\(\s*['"]([^'"]+)['"]/i);
         const baseName = (m && m[1]) ? m[1] : (container.id || 'Package');
 
-        // create new professional button
-        const price = 10000;
+        // Use price from map, fallback to 10000
+        // normalize keys like "port-blair" -> "Port Blair" to match locationPrices map
+        const lookupKey = baseName.replace(/-/g, ' ')
+                                  .toLowerCase()
+                                  .split(/\s+/)
+                                  .map(w => w ? (w.charAt(0).toUpperCase() + w.slice(1)) : '')
+                                  .join(' ');
+        const price = locationPrices[lookupKey] || 10000;
         const newBtn = document.createElement('button');
         newBtn.type = 'button';
         newBtn.className = 'add-to-cart';
