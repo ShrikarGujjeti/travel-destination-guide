@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Cart - FirstFlight Travels</title>
+<title>Your Cart - AA Travels</title>
 <link rel="stylesheet" href="./css/style.css">
 <link href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
 <script src="cart.js"></script>
@@ -22,12 +22,39 @@
 </section>
 
 <!-- Cart Section -->
-<section class="cart-container">
-    <h2>Your Selected Packages</h2>
-    <ul id="cart-items" class="cart-list"></ul>
-    <h2 id="total">Total: ₹0</h2>
-    <button id="checkout-btn" class="button checkout-btn">Checkout</button>
+<section class="cart-container" aria-labelledby="cart-heading">
+    <h2 id="cart-heading">Your Selected Packages</h2>
+
+    <ul id="cart-items" class="cart-list" aria-live="polite" aria-relevant="additions removals"></ul>
+
+    <div class="cart-summary" role="region" aria-label="Cart summary">
+        <div class="summary-left">
+            <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+            <!-- optional taxes/fees can be added here -->
+        </div>
+        <div class="summary-right">
+            <div id="total" class="total-amount">Total: ₹0</div>
+            <button id="checkout-btn" class="checkout-btn" type="button">Checkout</button>
+            <button id="clear-cart-btn" class="clear-cart" type="button">Clear Cart</button>
+        </div>
+    </div>
 </section>
+
+<script>
+// small handlers for clear and checkout (checkout wiring remains elsewhere)
+document.addEventListener('DOMContentLoaded', function () {
+    const clearBtn = document.getElementById('clear-cart-btn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function () {
+            if (!confirm('Clear all items from cart?')) return;
+            window.cart = [];
+            localStorage.removeItem('cart');
+            if (typeof displayCart === 'function') displayCart();
+            if (typeof updateCartCount === 'function') updateCartCount();
+        });
+    }
+});
+</script>
 
 <!-- Footer -->
 <section class="footer">
@@ -49,7 +76,7 @@
                     <a href="https://www.facebook.com/share/16kkL7CYGV/" target="_blank"><i class='bx bxl-facebook'></i></a>
                     <a href="https://www.instagram.com/aryyaaa.15?igsh=cWFpZXF0MXBwMzN3&utm_source=ig_contact_invite" target="_blank"><i class='bx bxl-instagram' ></i></a>
                     <a href="https://x.com/abhishek01_2005?t=7NIY2iwIRhC_0p4MXpwWog&s=09" target="_blank"><i class='bx bxl-twitter' ></i></a>
-                    <a href="https://www.linkedin.com/in/mohdrahil101" target="_blank"><i class='bx bxl-linkedin' ></i></a>
+                    <a href="https://www.linkedin.com/in/abhishek-pandey-94050337b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class='bx bxl-linkedin' ></i></a>
                     <a href="https://youtube.com/@abhishekpandey-cd4ms?si=uehYnICV6sdY-SEn" target="_blank"><i class='bx bxl-youtube' ></i></a>
                     <a href="https://github.com/AryaSingh15" target="_blank"><i class='bx bxl-github'></i></a>
                 </div>
@@ -82,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             "key": "rzp_test_R7I5Fy8cCZvcBC", // test key id provided
             "amount": totalAmount,
             "currency": "INR",
-            "name": "FirstFlight Travels",
+            "name": "AA Travels",
             "description": "Travel Package Payment",
             "handler": function (response) {
                 alert("Payment Successful! ID: " + response.razorpay_payment_id);

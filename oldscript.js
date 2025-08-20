@@ -55,7 +55,7 @@ function checkout() {
         "key": "YOUR_RAZORPAY_KEY", // Replace with your Razorpay key
         "amount": total * 100, // Amount in paise
         "currency": "INR",
-        "name": "FirstFlight Travels",
+        "name": "AA Travels",
         "description": "Travel Package Payment",
         "handler": function (response){
             alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
