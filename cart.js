@@ -1,43 +1,72 @@
-window.cart = JSON.parse(localStorage.getItem("cart")) || [];
+// maintain a window.cart reference and accept cart param when saving
+window.cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-function saveCart() {
+function saveCart(cart) {
+    // accept cart array and persist it; keep window.cart in sync
+    if (Array.isArray(cart)) {
+        window.cart = cart;
+    } else {
+        window.cart = window.cart || [];
+    }
     localStorage.setItem("cart", JSON.stringify(window.cart));
 }
 
-function updateCartCount() {
-    const countElem = document.getElementById("cart-count");
-    if (!countElem) return;
-    const totalQty = window.cart.reduce((s, it) => s + (it.qty || 1), 0);
-    countElem.innerText = totalQty;
-}
-
-function addToCart(name, price) {
-    const p = Number(price) || 0;
-    // merge by name
-    const existing = window.cart.find(i => i.name === name);
-    if (existing) {
-        existing.qty = (existing.qty || 1) + 1;
-    } else {
-        window.cart.push({ name, price: p, qty: 1 });
+function getCart() {
+    try {
+        // prefer window.cart if available, fallback to parsed storage
+        return Array.isArray(window.cart) ? window.cart : JSON.parse(localStorage.getItem('cart') || '[]');
+    } catch (e) {
+        return [];
     }
-    saveCart();
-    updateCartCount();
-    if (document.getElementById("cart-items") || document.getElementById("cart-list")) displayCart();
 }
 
-function removeFromCart(index) {
-    if (index < 0 || index >= window.cart.length) return;
-    window.cart.splice(index, 1);
-    saveCart();
-    displayCart();
+function addToCart(name, price, season = '', batch = '') {
+    const cart = getCart();
+
+    // try to merge same item with same season & batch
+    const existing = cart.find(i => i.name === name && i.season === season && i.batch === batch);
+    if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+    } else {
+        cart.push({
+            name,
+            price,
+            season,
+            batch,
+            quantity: 1
+        });
+    }
+
+    saveCart(cart);
     updateCartCount();
+    // optional: give feedback
+    alert(`${name} added to cart (${season} / ${batch})`);
+}
+
+function updateCartCount() {
+    const cart = getCart();
+    const count = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    const el = document.getElementById('cart-count');
+    if (el) el.textContent = count;
+}
+
+// remove/change functions should operate on window.cart then save
+function removeFromCart(index) {
+    const cart = getCart();
+    if (index >= 0 && index < cart.length) {
+        cart.splice(index, 1);
+        saveCart(cart);
+        updateCartCount();
+        displayCart();
+    }
 }
 
 function changeQuantity(index, delta) {
-    const item = window.cart[index];
+    const cart = getCart();
+    const item = cart[index];
     if (!item) return;
-    item.qty = Math.max(1, (item.qty || 1) + delta);
-    saveCart();
+    item.quantity = Math.max(1, (item.quantity || 1) + delta);
+    saveCart(cart);
     displayCart();
     updateCartCount();
 }

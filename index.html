@@ -43,8 +43,8 @@
         </nav>
  
         <div class="title">
-            <h1>Chinnal TRAVELS</h1>
-            <p>subhe karo chuti raat ko maro mutti travel ideology with affordable prices</p>
+            <h1>AA TRAVELS</h1>
+            <p>Happy journey create good memories is our ideology.</p>
             <a href="./register.html" class="button">Register Now!</a>
         </div>
         </div>
@@ -157,6 +157,25 @@
     </div>
 </section>
 
+<!-- Seasons & Batches Selection (insert just above the Packages section) -->
+<section class="seasons-batches" style="padding: 24px 0; background: #f8f8f8; position:relative; z-index:5; margin:20px 0;">
+    <div class="package-title">
+        <h2>Select Season & Batch</h2>
+    </div>
+    <form id="seasonBatchForm" style="max-width:480px; margin:0 auto; display:flex; gap:12px; align-items:center;">
+        <select id="season" name="season" required style="flex:1; padding:8px;">
+            <option value="">-- Select Season --</option>
+            <option value="summer">Summer</option>
+            <option value="monsoon">Monsoon</option>
+            <option value="winter">Winter</option>
+        </select>
+
+        <select id="batch" name="batch" required style="flex:1; padding:8px;">
+            <option value="">-- Select Batch --</option>
+        </select>
+    </form>
+</section>
+
 <!-- Packages -->
 <section class="package" id="package">
     <div class="package-title">
@@ -181,7 +200,7 @@
                         <li>Friendly Tour Guide</li>
                         <li>24/7 Customer Help Center</li>
                     </ul>
-                    <button type="button" onclick="addToCart('Bronze Package', 9999)">Add to Cart</button>
+                    <button type="button" onclick="addToCartWithSelection('Bronze Package', 9999)">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -202,7 +221,7 @@
                         <li>Friendly Tour Guide</li>
                         <li>24/7 Customer Help Center</li>
                     </ul>
-                    <button type="button" onclick="addToCart('Silver Package', 19999)">Add to Cart</button>
+                    <button type="button" onclick="addToCartWithSelection('Silver Package', 19999)">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -224,7 +243,7 @@
                         <li>Friendly Tour Guide</li>
                         <li>24/7 Customer Help Center</li>
                     </ul>
-                    <button type="button" onclick="addToCart('Gold Package', 29999)">Add to Cart</button>
+                    <button type="button" onclick="addToCartWithSelection('Gold Package', 29999)">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -247,19 +266,13 @@
                         <li>Friendly Tour Guide</li>
                         <li>24/7 Customer Help Center</li>
                     </ul>
-                    <button type="button" onclick="addToCart('Platinum Package', 39999)">Add to Cart</button>
+                    <button type="button" onclick="addToCartWithSelection('Platinum Package', 39999)">Add to Cart</button>
                 </div>
             </div>
         </div>
 
     </div>
 </section>
-
-
-
-
-
-
 
 <!-- Newsletter -->
 
@@ -316,12 +329,73 @@
 
 <script src="./cart.js"></script>
 <script>
+/* filepath: d:\shrikar\abhiskek\chinnal\travel-destination-guide\index.html */
+/* ...existing code... */
+
+/* Ensure DOM exists before accessing selects and wire up handlers */
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof updateCartCount === 'function') updateCartCount();
+
+    const batches = {
+        summer: [
+            { label: "Jan 5 to Feb 5", value: "Jan 5 - Feb 5" },
+            { label: "May 5 to Jun 5", value: "May 5 - Jun 5" }
+        ],
+        monsoon: [
+            { label: "Jul 5 to Sep 5", value: "Jul 5 - Sep 5" },
+            { label: "Aug 5 to Sep 5", value: "Aug 5 - Sep 5" }
+        ],
+        winter: [
+            { label: "Nov 5 to Dec 5", value: "Nov 5 - Dec 5" }
+        ]
+    };
+
+    const seasonSelect = document.getElementById('season');
+    const batchSelect = document.getElementById('batch');
+
+    if (seasonSelect && batchSelect) {
+        seasonSelect.addEventListener('change', () => {
+            const season = seasonSelect.value;
+            batchSelect.innerHTML = '<option value="">-- Select Batch --</option>';
+            if (batches[season]) {
+                batches[season].forEach(b => {
+                    const opt = document.createElement('option');
+                    opt.value = b.value;
+                    opt.textContent = b.label;
+                    batchSelect.appendChild(opt);
+                });
+            }
+        });
+    }
 });
+
+/* When adding to cart, always read selects at time of click to avoid stale references */
+function addToCartWithSelection(name, price) {
+    const season = (document.getElementById('season') || {}).value || '';
+    const batch = (document.getElementById('batch') || {}).value || '';
+
+    if (!season) {
+        alert('Please select a season before adding a package to cart.');
+        return;
+    }
+    if (!batch) {
+        alert('Please select a batch before adding a package to cart.');
+        return;
+    }
+
+    if (typeof addToCart === 'function') {
+        addToCart(name, price, season, batch);
+    } else {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart.push({ name, price, season, batch, quantity: 1 });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        if (typeof updateCartCount === 'function') updateCartCount();
+        alert(name + ' added to cart (' + season + ' / ' + batch + ')');
+    }
+}
+
+/* ...existing code... */
 </script>
 
-
- 
 </body>
 </html>
