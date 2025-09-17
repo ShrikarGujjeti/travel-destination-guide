@@ -547,6 +547,10 @@ nav ul li a{
     justify-content: space-around;
 }
 
+/* About layout: place image on the right on wide screens */
+.about .main{ flex-direction: row-reverse; gap: 40px; }
+@media (max-width: 820px){ .about .main{ flex-direction: column; gap: 24px; } }
+
 .connectbtn{
     display: inline-block;
     background-color: #fc0050;
